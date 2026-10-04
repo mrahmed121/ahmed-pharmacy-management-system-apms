@@ -65,3 +65,30 @@ MIT License.
 **What Ahmed built:** Complete rebuild from MEAN stack to Laravel 11 + React 18. Zero upstream code remains — "inspired by" (domain concepts only). New: FEFO engine, batch/expiry tracking, idempotent sales API, purchase orders, returns workflow, RBAC (8 roles), audit logging, Ahmed design system.
 
 Original MIT LICENSE preserved in `LICENSE-UPSTREAM.md`.
+
+## Troubleshooting (Windows)
+
+### "Missing PHP extensions" but XAMPP has them enabled
+The BAT now uses `scripts/check-env.php` (PHP-native `extension_loaded()`) instead of parsing `php -m`.
+If you still see false "missing" errors:
+1. Run `DOCTOR_APMS.bat` — it shows the exact php.exe path and ini file being used
+2. Check if a different PHP is first in PATH: `where php` lists all found
+3. Verify the ini path shown matches your XAMPP: should be `C:\xampp\php\php.ini`
+
+### "No php.ini loaded"
+1. Find your php.exe: `where php`
+2. Look for `php.ini-development` next to php.exe
+3. Copy it to `php.ini` (the BAT offers to do this automatically)
+4. For XAMPP: `C:\xampp\php\php.ini`
+
+### Enabling extensions in XAMPP
+1. Open `C:\xampp\php\php.ini` as Administrator
+2. Find the line (e.g., `;extension=curl`) and remove the `;` at the start
+3. Save, restart Apache, re-run the BAT
+4. Required: pdo_sqlite, mbstring, openssl, fileinfo, curl, zip
+
+### "Port busy" — BAT picks next free port automatically
+If 8001 is busy, it tries 8002, 8003, etc. The frontend .env is updated automatically.
+
+### Bypass checks (advanced)
+Run: `RUN_APMS.bat --skip-checks`

@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\InventoryController;
 use App\Http\Controllers\Api\V1\PosController;
 use App\Http\Controllers\Api\V1\PurchaseController;
+use App\Http\Controllers\Api\V1\ImportController;
 use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\UserController;
@@ -25,6 +26,8 @@ Route::prefix('v1')->group(function () {
         Route::get('sales', [PosController::class, 'index'])->middleware('permission:pos.use');
         Route::get('suppliers', [PurchaseController::class, 'suppliers'])->middleware('permission:purchases.view');
         Route::get('reports/daily-sales', [ReportController::class, 'dailySales'])->middleware('permission:reports.view');
+        Route::post('import/medicines', [ImportController::class, 'medicines'])->middleware('permission:inventory.manage');
+        Route::get('export/inventory', [ImportController::class, 'exportInventory'])->middleware('permission:inventory.view');
         Route::get('users', [UserController::class, 'index'])->middleware('permission:users.view');
         Route::get('settings', [SettingController::class, 'index'])->middleware('permission:settings.view');
         Route::put('settings', [SettingController::class, 'update'])->middleware('permission:settings.manage');
